@@ -82,21 +82,22 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 					}else{
 						$create_password = cleanInput($_POST["create_password"]);
 					}
+				$create_nickname = cleanInput($_POST["create_nickname"]);
 				}
 				if(	$create_email_error == "" && $create_password_error == ""){
 					
 					// räsi paroolist, mille salvestame ab'i
 					$hash = hash("sha512", $create_password);
 					
-					echo "Võib kasutajat luua! Kasutajanimi on ".$create_email." ja parool on ".$create_password." ja räsi on ".$hash;
+					echo "Võib kasutajat luua! Kasutajanimi on ".$create_email." ja parool on ".$create_password." ja räsi on ".$ha. "ja hyydnimi: ".$create_nickname;
 					
 					//Salvestame AB'i
-					$stmt = $mysqli->prepare("INSERT INTO user_sample (email, password) VALUES (?,?)");
+					$stmt = $mysqli->prepare("INSERT INTO user_sample (email, password, nickname) VALUES (?,?,?)");
 					
 					
 					
 					// asendame ? märgid, ss - s on string email, s on string password
-					$stmt->bind_param("ss", $create_email, $hash);
+					$stmt->bind_param("sss", $create_email, $hash,$create_nickname);
 					$stmt->execute();
 					$stmt->close();
 				}
